@@ -1,18 +1,20 @@
 'use strict';
 
-var raveLogo = 'https://res.cloudinary.com/dkbfehjxf/image/upload/v1511542310/Pasted_image_at_2017_11_09_04_50_PM_vc75kz.png'
-var amount = flw_payment_args.amount,
-    cbUrl = flw_payment_args.cb_url,
-    country = flw_payment_args.country,
-    curr = flw_payment_args.currency,
-    desc = flw_payment_args.desc,
-    email = flw_payment_args.email,
+var credoLogo = '/assets/images/credo.png';
+var amount = credo_payment_args.amount,
+    cbUrl = credo_payment_args.cb_url,
+    country = credo_payment_args.country,
+    curr = credo_payment_args.currency,
+    desc = credo_payment_args.desc,
+    email = credo_payment_args.email,
     form = jQuery('#credo-pay-now-button'),
-    logo = flw_payment_args.logo || raveLogo,
-    p_key = flw_payment_args.p_key,
-    title = flw_payment_args.title,
-    txref = flw_payment_args.txnref,
-    paymentMethod = flw_payment_args.payment_method,
+    logo = credo_payment_args.logo || credoLogo,
+    p_key = credo_payment_args.p_key,
+    title = credo_payment_args.title,
+    txref = credo_payment_args.txnref,
+    paymentMethod = credo_payment_args.payment_method,
+    name = credo_payment_args.firstname + ' ' + credo_payment_args.lastname,
+    phone = credo_payment_args.phone,
     redirect_url;
 
 if (form) {
@@ -24,39 +26,51 @@ if (form) {
 
 }
 
-var processPayment = function() {
+// credo make payment
+// const generateRandomNumber = (min, max) =>
+//     Math.floor(Math.random() * (max - min) + min);
 
-    getpaidSetup({
+// const transRef = `iy67f${generateRandomNumber(10, 60)}hvc${generateRandomNumber(
+//   10,
+//   90
+// )}`;
+
+var processPayment = function() {
+    CredoCheckout({
+        transRef: txref, //Please generate your own transRef that is unique for each transaction
         amount: amount,
-        country: country,
+        redirectUrl: redirect_url,
+        paymentOptions: ["CARDS", "BANK"],
         currency: curr,
-        custom_description: desc,
-        custom_title: title,
-        custom_logo: logo,
-        customer_email: email,
-        txref: txref,
-        payment_method: paymentMethod,
-        PBFPubKey: p_key,
-        onclose: function() {
+        customerName: name,
+        customerEmail: email,
+        customerPhoneNo: phone,
+        onClose: function() {
             if (redirect_url) {
                 redirectTo(redirect_url);
             }
         },
-        callback: function(d) {
-            sendPaymentRequestResponse(d);
-        }
+        callback: function(res) {
+            sendPaymentRequestResponse(res);
+        },
+        publicKey: p_key, // You should store your API key as an environment variable
     });
 
 };
 
 var sendPaymentRequestResponse = function(res) {
+    const txRef = res.merchantReferenceNo;
+    const amount = res.slugDetails.paymentAmount;
     jQuery
-        .post(cbUrl, res.tx)
-        .success(function(data) {
-            var response = JSON.parse(data);
-            redirect_url = response.redirect_url;
-            setTimeout(redirectTo, 5000, redirect_url);
-        });
+      .post({
+        url: cbUrl,
+        data: {txRef, amount}
+      })
+      .success(function(data) {
+        const response = JSON.parse(data);
+        redirect_url = response.redirect_url;
+        setTimeout(redirectTo, 3000, redirect_url);
+      });
 };
 
 var redirectTo = function(url) {
