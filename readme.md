@@ -4,7 +4,7 @@
  - **Tags:** Credo, woocommerce, payment gateway, bank account, credit card, debit card, nigeria, kenya, international, mastercard, visa
  - **Requires at least:** 5.4
  - **Tested up to:** 5.8.2
- - **Stable tag:** 1.0.2
+ - **Stable tag:** 1.0.0
  - **License:** MIT - see below
 
 Take payments on your store using Credo.
