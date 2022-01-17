@@ -1,10 +1,10 @@
 <?php
 /*
 Plugin Name: WooCommerce Credo Payment Gateway
-Plugin URI: http://credo.nugitech.com/
+Plugin URI: http://credocentral.com
 Description: Credo payment gateway for Credo.
 Version: 1.0.0
-Author: Joshua Uzor
+Author: Credo, Joshua Uzor
 Author URI: http://twitter.com/joshuauzor
   Copyright: © 2021 Joshua Uzor.
   License: MIT License

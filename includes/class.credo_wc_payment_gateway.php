@@ -16,7 +16,7 @@
     public function __construct() {
 
       $this->retries = 3;
-      $this->base_url = 'https://credo-js.nugitech.com';
+      $this->base_url = 'https://credocentral.com';
       $this->verify_base_url = 'https://api.credocentral.com/credo-payment/v1';
       $this->id = 'credo';
       $this->icon = null;
@@ -30,8 +30,8 @@
       $this->init_form_fields();
       $this->init_settings();
 
-      $this->title        = __( 'Pay with your bank account or credit/debit card using Credo', 'credo-payments' );
-      $this->description  = __( 'Pay with your bank account or credit/debit card using Credo', 'credo-payments' );
+      $this->title        = __( 'Pay with Credo using cards and other payment methods', 'credo-payments' );
+      $this->description  = __( 'Pay with Credo using cards and other payment methods', 'credo-payments' );
       $this->enabled      = $this->get_option( 'enabled' );
       $this->public_key   = $this->get_option( 'public_key' );
       $this->secret_key   = $this->get_option( 'secret_key' );
